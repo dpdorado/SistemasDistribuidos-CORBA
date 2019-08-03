@@ -1,0 +1,5 @@
+<.dato.>
+USER|admin
+PASSWORD|1234
+ROL|3
+

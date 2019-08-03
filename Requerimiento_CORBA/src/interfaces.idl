@@ -1,0 +1,106 @@
+module sop_corba{  
+
+    interface UsuarioCllbckInt{
+        string notificar(in string codigoAnteproyecto);
+    };
+
+    struct IniciarSesionDTO{
+        string usuario;
+        string contrasenia;
+        UsuarioCllbckInt userCllbck;
+    };
+    
+    struct RespuestaISDTO{
+        long tipoUser;
+        string mensaje;
+    };
+
+    struct RespuestaGDTO{
+        boolean operacionExito;
+        string mensaje;
+    };
+
+    struct CambioContraseniaDTO{
+        IniciarSesionDTO datosUsuario;
+        string nuveaContrasenia;
+    };
+
+    struct UsuarioDTO{
+        string nombresApellidos;
+        string identificacion;
+        string usuario;
+        string contrasenia;
+        long tipoUser;
+    };
+    
+    struct AnteproyectoDTO{
+        string modalidad;
+        string titulo;
+        string codigo;
+        string nombreEstudiante1;
+        string nombreEstudiante2;
+        string nombreDirector;
+        string nombreCoDirector;
+        string fechaRegistro;
+        string fechaAprobacion;
+        long concepto;
+        long estado;
+        long numeroRevision;
+    };
+    
+    struct EvaluadoresDTO{
+        string codigoAnteproyecto;
+        string nombreEvaluador1;
+        string conceptoEvaluador1;
+        string fechaRevision1;
+        string nombreEvaluador2;
+        string conceptoEvaluador2;
+        string fechaRevision2;
+    };
+    
+    struct AnteproyectoCompletoDTO{
+        AnteproyectoDTO anteproyecto;
+        EvaluadoresDTO evaluadores;
+    };
+
+    struct MConceptoAnteproyectoDTO{
+        string codigoAnteproyecto;
+        long nuevoConcepto;
+    };
+            
+    struct AnteproyectoSimpleDTO{
+        string Codigo;
+        string Titulo;
+    };
+    
+    struct AgregarConceptoAnteproyectoDTO{
+        string concepto;
+        string codigoAnteproyecto;
+        string nombreEvaluador;
+    };        
+
+    typedef sequence<AnteproyectoSimpleDTO> ListaAnteproyectos;
+      
+    
+    interface LoguearInt{
+        RespuestaISDTO iniciarSesion(in IniciarSesionDTO datosIS);
+        RespuestaGDTO cambiarContrasenia(in CambioContraseniaDTO datosCC);
+    };
+      
+    interface OperacionesJDInt{               
+        RespuestaGDTO registrarUsuario(in UsuarioDTO datosUser);
+	RespuestaGDTO registrarAnteproyecto(in AnteproyectoDTO datosAnteproyecto);
+	RespuestaGDTO asignarEvaluadores(in EvaluadoresDTO datosEvaluadores);
+	AnteproyectoCompletoDTO buscarAnteproyceto(in string codigoAnteproyecto);
+	RespuestaGDTO modificarConceptoAnteproyecto(in MConceptoAnteproyectoDTO datosModificacion);
+    };
+    
+    interface OperacionesEDInt{        
+        AnteproyectoDTO buscarAnteproyecto(in string codigoAnteproyecto);
+	ListaAnteproyectos listarAnteproyectos();
+    };
+
+    interface OperacionesEInt{                
+        RespuestaGDTO agregarConceptoAnteproyecto(in AgregarConceptoAnteproyectoDTO datosAnteproyecto);
+    };      
+};
