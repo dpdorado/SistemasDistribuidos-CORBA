@@ -1,0 +1,4 @@
+javac -d ../bin -cp ".;./jars/mysql-connector-java-5.1.5-bin.jar" Datos/*.java
+javac -d ../bin LogicaNegocio/*.java
+javac -d ../bin Test/*.java
+javac -d ../bin Vista/*.java

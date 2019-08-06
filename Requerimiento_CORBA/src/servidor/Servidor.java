@@ -36,7 +36,8 @@ public class Servidor {
      */
     public static void main(String[] args) {
         try {
-            ORB orb = ORB.init(args, null);
+            String[] arr = {"-ORBInitialHost", "localhost", "ORBInitialPort", "1200"};
+            ORB orb = ORB.init(arr, null);
 
             POA rootpoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
             rootpoa.the_POAManager().activate();
@@ -48,8 +49,7 @@ public class Servidor {
             org.omg.CORBA.Object ref = rootpoa.servant_to_reference(GUImpl);
             LoguearInt cref = LoguearIntHelper.narrow(ref);
 
-            org.omg.CORBA.Object objRef =
-                           orb.resolve_initial_references("NameService");
+            org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 
             String name = "Loguear";

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import servidor.dao.GestorObjetoDAO;
 import servidor.persistencia.IConstantes;
-import servidor.utilidades.persistencia.GestorAnteproyectosDAO;
+import servidor.persistencia.GestorAnteproyectosDAO;
 import sop_corba.AnteproyectoDTO;
 import sop_corba.AnteproyectoSimpleDTO;
 import sop_corba.OperacionesEDIntPOA;

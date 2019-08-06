@@ -32,10 +32,11 @@ public class GestorUsuariosDAO implements GestorObjetoDAO{
 		if (isAdminUs){
                     return varResultado;
 		}                
-                
+                System.out.println("1");
                 isUsersId=this.exists(IConstantes.IDENTIFICACION, object.get(IConstantes.IDENTIFICACION));
-		isUsersUs=this.exists(IConstantes.TIPO_USUARIO, object.get(IConstantes.TIPO_USUARIO));
-                
+		 System.out.println("2");
+                isUsersUs=this.exists(IConstantes.TIPO_USUARIO, object.get(IConstantes.TIPO_USUARIO));
+                 System.out.println("3");
                 if (isUsersId || isUsersUs){
                     return varResultado;
 		}                
@@ -65,6 +66,7 @@ public class GestorUsuariosDAO implements GestorObjetoDAO{
             boolean varResultado=false;            
             String consulta="SELECT * FROM USUARIO WHERE "+clave+" = '"+valor+"'";
             ResultSet rs=this.gestorBD.executeQuery(consulta); 
+            System.out.println(consulta);
             if (rs!=null){
                 try {
                     if(rs.next()){

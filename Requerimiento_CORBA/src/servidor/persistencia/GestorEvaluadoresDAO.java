@@ -37,7 +37,7 @@ public class GestorEvaluadoresDAO implements GestorObjetoDAO{
                     return varResultado;
                 }
                                                					
-		varResultado= this.gestor.writeEvals(object,auxIDeval1,auxIDeval2);	
+		varResultado= this.writeEvals(object,auxIDeval1,auxIDeval2);	
                 
 		return varResultado;
 	}

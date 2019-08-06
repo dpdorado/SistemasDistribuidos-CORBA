@@ -1,4 +1,4 @@
-package servidor.utilidades.persistencia;
+package servidor.persistencia;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

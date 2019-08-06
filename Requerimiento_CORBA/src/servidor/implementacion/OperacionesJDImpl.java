@@ -8,7 +8,7 @@ package servidor.implementacion;
 import java.util.Hashtable;
 import servidor.dao.GestorObjetoDAO;
 import servidor.persistencia.IConstantes;
-import servidor.utilidades.persistencia.GestorAnteproyectosDAO;
+import servidor.persistencia.GestorAnteproyectosDAO;
 import servidor.persistencia.GestorEvaluadoresDAO;
 import servidor.persistencia.GestorUsuariosDAO;
 import sop_corba.AnteproyectoCompletoDTO;
@@ -42,8 +42,8 @@ public class OperacionesJDImpl extends OperacionesJDIntPOA{
         object.put(IConstantes.NOMBRES_APELLIDOS,datosUser.getNombresApellidos());
         object.put(IConstantes.IDENTIFICACION, datosUser.getIdentificacion());
         object.put(IConstantes.USUARIO, datosUser.getUsuario());
-        object.put(IConstantes.CONTRASENIA, datosUser.getContrasenia());
-        object.put(IConstantes.TIPO_USUARIO, Integer.toString(datosUser.getTipoUser()));
+        object.put(IConstantes.CONTRASENIA, datosUser.getContrasenia());        
+        object.put(IConstantes.TIPO_USUARIO, Integer.toString(datosUser.getTipoUser()));        
         respuesta.setOperacionExito(this.gestorUsuarios.registrarObjeto(object));
         if(respuesta.isOperacionExito()) {
                 respuesta.setMensaje("Registro exitoso.");

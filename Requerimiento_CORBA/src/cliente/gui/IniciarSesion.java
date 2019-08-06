@@ -141,19 +141,19 @@ public class IniciarSesion extends javax.swing.JFrame {
             if (respuestaIS != null) {
                 Constantes.usuarioLogueado = usuario;
                 switch (respuestaIS.getTipoUser()) {
-                    case 1:
+                    case 3:
                         JefeDepartamentoGUI departamentoGUI = new JefeDepartamentoGUI();
                         departamentoGUI.setLocationRelativeTo(null);
                         departamentoGUI.setVisible(true);
                         this.setVisible(false);
                         break;
-                    case 2:
+                    case 1:
                         EstudianteDirectorGUI directorGUI = new EstudianteDirectorGUI();
                         directorGUI.setLocationRelativeTo(null);
                         directorGUI.setVisible(true);
                         this.setVisible(false);
                         break;
-                    case 3:
+                    case 2:
                         EvaluadorGUI evaluadorGUI = new EvaluadorGUI();
                         evaluadorGUI.setLocationRelativeTo(null);
                         evaluadorGUI.setVisible(true);

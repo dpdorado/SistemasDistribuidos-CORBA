@@ -1,4 +1,4 @@
-package servidor.utilidades.persistencia;
+package servidor.persistencia;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

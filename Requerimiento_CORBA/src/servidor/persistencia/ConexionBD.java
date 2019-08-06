@@ -38,10 +38,7 @@ public class ConexionBD {
             // gnera una conexión con la base de datos
             return 1;
         }
-        catch(SQLException e){
-            System.out.println("Error: " + e.getMessage());
-        }
-        catch(Exception e){
+        catch(SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException e){
             System.out.println("Error: " + e.getMessage());
         }
         return -1;

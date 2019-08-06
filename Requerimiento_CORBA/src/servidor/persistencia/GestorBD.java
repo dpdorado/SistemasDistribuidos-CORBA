@@ -14,51 +14,62 @@ import java.sql.SQLException;
  * @author DD
  */
 public class GestorBD {
+
     private ConexionBD conexion;
-    
-    public boolean openConnection() {       
-        return conexion.conectar()==1?true:false;
+
+    public GestorBD() {
+        this.conexion = new ConexionBD();
     }
-    public boolean closeConnection(){
-        boolean varResultado=false;
-        if (this.conexion!=null){            
+
+    public boolean openConnection() {
+        return conexion.conectar() == 1 ? true : false;
+    }
+
+    public boolean closeConnection() {
+        boolean varResultado = false;
+        if (this.conexion != null) {
             this.conexion.desconectar();
-            varResultado=true;
+            varResultado = true;
         }
         return varResultado;
     }
-       
-    public boolean executeUpdate(String consulta){        
+
+    public boolean executeUpdate(String consulta) {
         conexion.conectar();
-        int resultado=0;
-        try {            
+        int resultado = 0;
+        try {
             PreparedStatement sentencia = null;
             //String consulta = "insert into empleado(empleado.nombresEmpleado,empleado.apellidosEmpleado,empleado.salarioEmpleado) values(?,?,?)";
-            sentencia = conexion.getConnection().prepareStatement(consulta);           
-            resultado = sentencia.executeUpdate(consulta); 
+            sentencia = conexion.getConnection().prepareStatement(consulta);
+            resultado = sentencia.executeUpdate(consulta);
             sentencia.close();
             conexion.desconectar();
 
         } catch (SQLException e) {
-                  System.out.println("error en la inserción: "+e.getMessage());         
-        }        
-        return resultado == 0?false:true;
+            System.out.println("error en la inserción: " + e.getMessage());
+        }
+        return resultado == 0 ? false : true;
     }
-    
-     public ResultSet executeQuery(String consulta){        
-        conexion.conectar();
-        ResultSet rs=null;
-        try {            
+
+    public ResultSet executeQuery(String consulta) {
+        ResultSet rs = null;
+        try {
+            int result= conexion.conectar();
+            if (result==-1){
+                return null;
+            }
             PreparedStatement sentencia = null;
             //String consulta = "insert into empleado(empleado.nombresEmpleado,empleado.apellidosEmpleado,empleado.salarioEmpleado) values(?,?,?)";
-            sentencia = conexion.getConnection().prepareStatement(consulta);           
-            rs = sentencia.executeQuery(consulta); 
+            sentencia = conexion.getConnection().prepareStatement(consulta);
+            rs = sentencia.executeQuery(consulta);
             sentencia.close();
             conexion.desconectar();
 
         } catch (SQLException e) {
-                  System.out.println("error en la inserción: "+e.getMessage());         
-        }        
+            System.out.println("error en la inserción: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error de conexion! "+e);
+        }
         return rs;
     }
 }
