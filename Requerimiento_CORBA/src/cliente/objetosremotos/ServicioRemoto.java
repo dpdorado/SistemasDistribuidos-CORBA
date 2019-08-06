@@ -7,17 +7,8 @@ package cliente.objetosremotos;
 
 import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
-import java.net.MalformedURLException;
-import java.rmi.ConnectException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.ConnectException;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -53,9 +44,7 @@ public class ServicioRemoto {
             POA rootPOA = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
             rootPOA.the_POAManager().activate();
             // instancia el servant
-        } catch (InvalidName ex) {
-            Mensajes.error(gui, ex);
-        } catch (AdapterInactive ex) {
+        } catch (InvalidName | AdapterInactive ex) {
             Mensajes.error(gui, ex);
         }
     }

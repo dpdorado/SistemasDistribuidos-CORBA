@@ -6,10 +6,8 @@
 package cliente.gui;
 
 import cliente.objetosremotos.IniciarSesionRemoto;
+import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sop_corba.RespuestaISDTO;
 
 /**
@@ -18,7 +16,6 @@ import sop_corba.RespuestaISDTO;
  */
 public class IniciarSesion extends javax.swing.JFrame {
 
-    
     private IniciarSesionRemoto sesionRemoto;
 
     /**
@@ -29,8 +26,8 @@ public class IniciarSesion extends javax.swing.JFrame {
      */
     public IniciarSesion() {
 
-        this.sesionRemoto = new IniciarSesionRemoto(this);
         initComponents();
+        this.sesionRemoto = new IniciarSesionRemoto(this);
 
     }
 
@@ -130,35 +127,34 @@ public class IniciarSesion extends javax.swing.JFrame {
         if (usuario.equals("") || contrasenia.equals("")) {
             Mensajes.error(jPanel1, "Debe ingresar todos los datos!");
         } else {
-            try {
-                RespuestaISDTO respuestaIS = sesionRemoto.iniciarSesion(datosIS);
-                
-                if (respuestaIS != null) {
-                    switch (respuestaIS.getTipoUser()) {
-                        case 1:
-                            JefeDepartamentoGUI departamentoGUI = new JefeDepartamentoGUI(this.direcionIP, this.puerto);
-                            departamentoGUI.setVisible(true);
-                            this.setVisible(false);
-                            break;
-                        case 2:
-                            EstudianteDirectorGUI directorGUI = new EstudianteDirectorGUI(this.direcionIP, this.puerto);
-                            directorGUI.setVisible(true);
-                            this.setVisible(false);
-                            break;
-                        case 3:
-                            EvaluadorGUI evaluadorGUI = new EvaluadorGUI(this.direcionIP, this.puerto);
-                            evaluadorGUI.setVisible(true);
-                            this.setVisible(false);
-                            break;
-                        default:
-                            Mensajes.error(jPanel1, respuestaIS.getMensaje());
-                            break;
-                    }
-                } else {
-                    Mensajes.error(jPanel1, "Usuario o Contraseña incorrectos.");
+            RespuestaISDTO respuestaIS = sesionRemoto.iniciarSesion(usuario, contrasenia);
+            if (respuestaIS != null) {
+                Constantes.usuarioLogueado = usuario;
+                switch (respuestaIS.getTipoUser()) {
+                    case 1:
+                        JefeDepartamentoGUI departamentoGUI = new JefeDepartamentoGUI();
+                        departamentoGUI.setLocationRelativeTo(null);
+                        departamentoGUI.setVisible(true);
+                        this.setVisible(false);
+                        break;
+                    case 2:
+                        EstudianteDirectorGUI directorGUI = new EstudianteDirectorGUI();
+                        directorGUI.setLocationRelativeTo(null);
+                        directorGUI.setVisible(true);
+                        this.setVisible(false);
+                        break;
+                    case 3:
+                        EvaluadorGUI evaluadorGUI = new EvaluadorGUI();
+                        evaluadorGUI.setLocationRelativeTo(null);
+                        evaluadorGUI.setVisible(true);
+                        this.setVisible(false);
+                        break;
+                    default:
+                        Mensajes.error(jPanel1, respuestaIS.getMensaje());
+                        break;
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                Mensajes.error(jPanel1, "Usuario o Contraseña incorrectos.");
             }
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed

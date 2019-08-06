@@ -6,7 +6,9 @@
 package cliente.gui;
 
 import cliente.objetosremotos.EvaluadorRemoto;
+import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
+import sop_corba.AnteproyectoDTO;
 
 /**
  *
@@ -20,9 +22,8 @@ public class EvaluadorGUI extends javax.swing.JFrame {
      * Creates new form EvaluadorGUI
      */
     public EvaluadorGUI() {
-
-        this.evaluadorRemoto = new EvaluadorRemoto(this);
         initComponents();
+        this.evaluadorRemoto = new EvaluadorRemoto(this);
 //        
     }
 
@@ -142,6 +143,11 @@ public class EvaluadorGUI extends javax.swing.JFrame {
         txtModaliadaBA.setPreferredSize(new java.awt.Dimension(40, 40));
 
         btnBuscarBA.setText("BUSCAR");
+        btnBuscarBA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarBAActionPerformed(evt);
+            }
+        });
 
         txtFechaRevBA.setMinimumSize(new java.awt.Dimension(20, 41));
         txtFechaRevBA.setPreferredSize(new java.awt.Dimension(40, 40));
@@ -414,17 +420,31 @@ public class EvaluadorGUI extends javax.swing.JFrame {
 
     private void btnModificarConceptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarConceptoActionPerformed
         // TODO add your handling code here:
-        if (txtCodigoAntIC.getText().equals("")) {
+        String codigo = txtCodigoAntIC.getText();
+        if (codigo.equals("")) {
             Mensajes.error(jPanel1, "Debe  ingresar el codigo!");
         } else {
-            if (this.evaluadorRemoto.modificarConcepto(txtCodigoAntIC.getText())) {
-                Mensajes.info(jPanel1, "Se ha modificado el concepto!");
-            } else {
-                Mensajes.error(jPanel1, "No se pudo modificar el concepto!");
-
+            try{
+               Integer.parseInt(codigo);
+               this.evaluadorRemoto.agregarConceptoAnteproyecto(codigo, (cbConceptoIC.getSelectedIndex()+1)+"");
+            }catch (NumberFormatException nfe){
+                Mensajes.error(jPanel1, nfe);
             }
         }
     }//GEN-LAST:event_btnModificarConceptoActionPerformed
+
+    private void btnBuscarBAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarBAActionPerformed
+        // TODO add your handling code here:
+        String codigoAnteproyecto = txtCodigoAntBA.getText();
+        if(codigoAnteproyecto.equals("")){
+            try{
+                Integer.parseInt(codigoAnteproyecto);
+                this.evaluadorRemoto.buscarAnteproyecto(codigoAnteproyecto);
+            }catch(NumberFormatException nfe){
+                Mensajes.error(jPanel1, nfe);
+            }
+        }
+    }//GEN-LAST:event_btnBuscarBAActionPerformed
 
     /**
      * @param args the command line arguments
@@ -459,6 +479,26 @@ public class EvaluadorGUI extends javax.swing.JFrame {
                 new EvaluadorGUI().setVisible(true);
             }
         });
+    }
+    
+    public void limpiarModificarConcepto() {
+        txtCodigoAntIC.setText("");
+        cbConceptoIC.setSelectedIndex(0);
+    }
+     public void cargarAnteproyecto(AnteproyectoDTO adto) {
+        txtModaliadaBA.setText(adto.getModalidad());
+        txtCoDirectorBA.setText(adto.getNombreCoDirector());
+        txtCodigoBA.setText(adto.getCodigo());
+        txtConceptoBA.setText(Constantes.Concepto[(adto.getConcepto() -1)] );
+        txtDirectorBA.setText(adto.getNombreDirector());
+        txtEstadoBA.setText(Constantes.Estado[(adto.getEstado() -1)]);
+        txtEstudiante1BA.setText(adto.getNombreEstudiante1());
+        txtEstudiante2BA.setText(adto.getNombreEstudiante2());
+        txtFechaRegBA.setText(adto.getFechaRegistro());
+        txtFechaRevBA.setText(adto.getFechaAprobacion());
+        txtModaliadaBA.setText(adto.getModalidad());
+        txtNumRevisionBA.setText(adto.getNumeroRevision()+"");
+        txtTituloBA.setText(adto.getTitulo());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

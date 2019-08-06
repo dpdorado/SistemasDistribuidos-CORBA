@@ -7,6 +7,7 @@ package cliente.objetosremotos;
 
 import cliente.gui.IniciarSesion;
 import cliente.implementacion.UsuarioCllbckImpl;
+import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
@@ -30,7 +31,7 @@ import sop_corba.UsuarioCllbckIntHelper;
  *
  * @author andres
  */
-public class IniciarSesionRemoto extends ServicioRemoto implements LoguearIntOperations{
+public class IniciarSesionRemoto extends ServicioRemoto{
 
     public LoguearInt refLoguearInt;
     public UsuarioCllbckInt hrefUsuarioCllbck;
@@ -43,7 +44,7 @@ public class IniciarSesionRemoto extends ServicioRemoto implements LoguearIntOpe
     
     private void iniciar() {
         try {
-            String name = "Loguear";
+            String name = Constantes.servicioIniSesion;
             this.refLoguearInt = LoguearIntHelper.narrow(ncref.resolve_str(name));
 
             /* String name = "PingPong";
@@ -57,18 +58,18 @@ public class IniciarSesionRemoto extends ServicioRemoto implements LoguearIntOpe
             hrefUsuarioCllbck = UsuarioCllbckIntHelper.narrow(ref2);
         } catch (InvalidName | CannotProceed | org.omg.CosNaming.NamingContextPackage.InvalidName | NotFound | AdapterInactive | ServantNotActive | WrongPolicy ex) {
             Mensajes.error(gui, ex);
+            System.exit(0);
         } 
     }
-
-    @Override
-    public RespuestaISDTO iniciarSesion(IniciarSesionDTO datosIS) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    
     public RespuestaGDTO cambiarContrasenia(CambioContraseniaDTO datosCC) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public RespuestaISDTO iniciarSesion(String usuario, String contrasenia) {
+        return this.refLoguearInt.iniciarSesion(new IniciarSesionDTO(usuario, contrasenia, hrefUsuarioCllbck));
+    }
+    
     
     
 

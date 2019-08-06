@@ -1,3 +1,6 @@
-/Requerimiento_CORBA/build
-/Requerimiento_CORBA/nbproject
-
+Requerimiento_CORBA/build
+Requerimiento_CORBA/nbproject
+Requerimiento_CORBA/bin
+Requerimiento_CORBA/bin/
+Requerimiento_CORBA/nbproject/private/private.properties
+.history/

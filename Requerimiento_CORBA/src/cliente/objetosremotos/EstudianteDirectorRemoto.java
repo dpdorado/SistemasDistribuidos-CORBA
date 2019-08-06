@@ -6,6 +6,7 @@
 package cliente.objetosremotos;
 
 import cliente.gui.EstudianteDirectorGUI;
+import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.InvalidName;
@@ -14,15 +15,14 @@ import sop_corba.AnteproyectoDTO;
 import sop_corba.AnteproyectoSimpleDTO;
 import sop_corba.OperacionesEDInt;
 import sop_corba.OperacionesEDIntHelper;
-import sop_corba.OperacionesEDIntOperations;
 
 /**
  *
  * @author andres
  */
-public class EstudianteDirectorRemoto extends ServicioRemoto implements OperacionesEDIntOperations { 
+public class EstudianteDirectorRemoto extends ServicioRemoto {
+
     private OperacionesEDInt operacionesEDInt;
-    
 
     public EstudianteDirectorRemoto(EstudianteDirectorGUI gui) {
         super(gui);
@@ -31,22 +31,27 @@ public class EstudianteDirectorRemoto extends ServicioRemoto implements Operacio
 
     private void iniciar() {
         try {
-            String name = "OperacionesE";
+            String name = Constantes.servicioEstDir;
             this.operacionesEDInt = OperacionesEDIntHelper.narrow(ncref.resolve_str(name));
 
         } catch (CannotProceed | InvalidName | NotFound ex) {
             Mensajes.error(gui, ex);
-        } 
+            System.exit(0);
+        }
     }
 
-    @Override
-    public AnteproyectoDTO buscarAnteproyecto(String codigoAnteproyecto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void buscarAnteproyecto(String codigoAnteproyecto) {
+        AnteproyectoDTO adto = this.operacionesEDInt.buscarAnteproyecto(codigoAnteproyecto);
+        ((EstudianteDirectorGUI) gui).cargarAnteproyecto(adto);
     }
 
-    @Override
-    public AnteproyectoSimpleDTO[] listarAnteproyectos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object[][] listarAnteproyectos() {
+        AnteproyectoSimpleDTO[] anteproyectos = this.operacionesEDInt.listarAnteproyectos();
+        Object[][] lista = new Object[anteproyectos.length][2];
+        for (int i = 0; i < anteproyectos.length; i++) {
+            lista[i][0] = anteproyectos[i].getCodigo();
+            lista[i][1] = anteproyectos[i].getTitulo();
+        }
+        return lista;
     }
-    
 }

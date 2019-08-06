@@ -8,11 +8,9 @@ package cliente.gui;
 import cliente.objetosremotos.JefeDepartamentoRemoto;
 import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import sop_corba.AnteproyectoCompletoDTO;
+import sop_corba.AnteproyectoDTO;
 
 /**
  *
@@ -27,7 +25,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     /**
      * Creates new form JefeDGUI
      */
-    public JefeDepartamentoGUI()   {
+    public JefeDepartamentoGUI() {
 
         this.servicioJefeD = new JefeDepartamentoRemoto(this);
         initComponents();
@@ -139,6 +137,12 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbAnteproyectosLA = new javax.swing.JTable();
         btListar = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        cbConceptoMC = new javax.swing.JComboBox<>();
+        jLabel41 = new javax.swing.JLabel();
+        txtCodigoAntMC = new javax.swing.JTextField();
+        btnModificarConcepto = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JEFE DE DEPARTAMENTO");
@@ -839,6 +843,59 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("LISTAR ANTEPROYECTOS", jPanel6);
 
+        jLabel40.setText("NUEVO CONCEPTO");
+
+        cbConceptoMC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No Aprobado", "Aprobado" }));
+
+        jLabel41.setText("CÓDIGO ANTEPROYECTO");
+
+        txtCodigoAntMC.setText("codigo");
+
+        btnModificarConcepto.setLabel("MODIFICAR CONCEPTO");
+        btnModificarConcepto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarConceptoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCodigoAntMC, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                            .addComponent(cbConceptoMC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(318, 318, 318)
+                        .addComponent(btnModificarConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(365, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel41)
+                    .addComponent(txtCodigoAntMC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel40)
+                    .addComponent(cbConceptoMC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(btnModificarConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(253, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("MOD. CONCEPTO", jPanel8);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -888,8 +945,13 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
                 || txtIdentificacionRU.getText().equals("")) {
             Mensajes.error(jPanel1, "Debe ingresar todos los datos!");
         } else {
-            this.servicioJefeD.registrarUsuario(txtNomApeRU.getText(), Integer.parseInt(txtIdentificacionRU.getText()), txtUsuarioUnicaucaisRU.getText(), txtContraseniaRU.getText(), cbTipoUsuario.getSelectedIndex() + 1);
-            limpiarRegistroUsuario();
+            try {
+                int id = Integer.parseInt(txtIdentificacionRU.getText());
+                this.servicioJefeD.registrarUsuario(txtNomApeRU.getText(), txtIdentificacionRU.getText(), txtUsuarioUnicaucaisRU.getText(), txtContraseniaRU.getText(), cbTipoUsuario.getSelectedIndex() + 1);
+
+            } catch (NumberFormatException nfe) {
+                Mensajes.error(jPanel1, nfe);
+            }
         }
     }//GEN-LAST:event_btnRegistrarRUActionPerformed
 
@@ -913,8 +975,8 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
             Mensajes.error(jPanel1, "Debe ingresar todos los valores!");
         } else {
             try {
-                this.servicioJefeD.registrarAnteproyecto(modalidad, titulo, codigo, e1, e2, director, coDirector, fechaR, fechaAp, concepto, estado, Integer.parseInt(numeroRev));
-                limpiarRegistrarAnteproyecto();
+                int numRevision = Integer.parseInt(numeroRev);
+                this.servicioJefeD.registrarAnteproyecto(modalidad, titulo, codigo, e1, e2, director, coDirector, fechaR, fechaAp, concepto, estado, numRevision);
             } catch (NumberFormatException nfe) {
                 Mensajes.error(jPanel1, "El número de revision debe ser un numero!");
             }
@@ -923,19 +985,21 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
 
     private void btnAsignarEvaluadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarEvaluadoresActionPerformed
         String codigo = txtCodigoAntAE.getText();
+
         String nomEva1 = txtNomEval1AE.getText();
-        String nomEva2 = txtNomEval2AE.getText();
         String fechaEva1 = txtFecRevEval1AE.getText();
+        String conceptoEva1 = (cbConcEval1AE.getSelectedIndex() + 1) + "";
+
+        String nomEva2 = txtNomEval2AE.getText();
         String fechaEva2 = txtFecRevEval2AE.getText();
-        String conceptoEva1 = cbConcEval1AE.getSelectedItem().toString();
-        String conceptoEva2 = cbConcEval2AE.getSelectedItem().toString();
+        String conceptoEva2 = (cbConcEval2AE.getSelectedIndex() + 1) + "";
 
         if (codigo.equals("") || nomEva1.equals("") || nomEva2.equals("")
                 || fechaEva1.equals("") || fechaEva2.equals("")) {
             Mensajes.error(jPanel1, "Debe ingresar todos los valores!");
 
         } else {
-
+            this.servicioJefeD.asignarEvaluadores(codigo, nomEva1, fechaEva1, conceptoEva1, nomEva2, fechaEva2, conceptoEva2);
         }
 
     }//GEN-LAST:event_btnAsignarEvaluadoresActionPerformed
@@ -951,13 +1015,26 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarBAActionPerformed
 
     private void btListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListarActionPerformed
-        try {
-            // TODO add your handling code here:
+                // TODO add your handling code here:
             listarAnteproyectos();
-        } catch (RemoteException ex) {
-            Logger.getLogger(JefeDepartamentoGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     
     }//GEN-LAST:event_btListarActionPerformed
+
+    private void btnModificarConceptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarConceptoActionPerformed
+        // TODO add your handling code here:
+        if (txtCodigoAntMC.getText().equals("")) {
+            Mensajes.error(jPanel1, "Debe ingresar un código!");
+        } else {
+            try {
+                String codigo = txtCodigoAntMC.getText();
+                int nuevoConcepto = cbConceptoMC.getSelectedIndex() + 1;
+                Integer.parseInt(codigo);
+                this.servicioJefeD.modificarConceptoAnteproyecto(codigo, nuevoConcepto);
+            } catch (NumberFormatException e) {
+                Mensajes.error(jPanel1, "El codigo debe ser un número!");
+            }
+        }
+    }//GEN-LAST:event_btnModificarConceptoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -995,7 +1072,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
         });
     }
 
-    public void listarAnteproyectos() throws RemoteException {
+    public void listarAnteproyectos() {
         tbAnteproyectosLA.setModel(new DefaultTableModel(this.servicioJefeD.listarAnteproyectos(), new String[]{
             "CÓDIGO", "TITULO"
         }));
@@ -1066,7 +1143,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
         txtNumRevisionBA.setText("");
     }
 
-    public void cargarBuscarAnteproyecto(NodoAnteproyectoDTO nadto) {
+    public void cargarBuscarAnteproyecto(AnteproyectoDTO nadto) {
 
         txtModaliadaBA.setText(nadto.getModalidad());
         txtTituloBA.setText(nadto.getTitulo());
@@ -1090,6 +1167,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.JButton btListar;
     private javax.swing.JButton btnAsignarEvaluadores;
     private javax.swing.JButton btnBuscarBA;
+    private java.awt.Button btnModificarConcepto;
     private javax.swing.JButton btnRegistrarRU;
     private javax.swing.JButton btnRegistroAntep;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -1098,6 +1176,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JComboBox<String> cbConcEval1AE;
     private javax.swing.JComboBox<String> cbConcEval2AE;
+    private javax.swing.JComboBox<String> cbConceptoMC;
     private javax.swing.JComboBox<String> cbConceptoRA;
     private javax.swing.JComboBox<String> cbEstadoRA;
     private javax.swing.JComboBox<String> cbModalidadRA;
@@ -1136,6 +1215,8 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1148,6 +1229,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane2;
@@ -1156,6 +1238,7 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtCoDirectorRA;
     private javax.swing.JTextField txtCodigoAntAE;
     private javax.swing.JTextField txtCodigoAntBA;
+    private javax.swing.JTextField txtCodigoAntMC;
     private javax.swing.JTextField txtCodigoBA;
     private javax.swing.JTextField txtCodigoRA;
     private javax.swing.JTextField txtConceptoBA;
@@ -1184,5 +1267,10 @@ public class JefeDepartamentoGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtTituloRA;
     private javax.swing.JTextField txtUsuarioUnicaucaisRU;
     // End of variables declaration//GEN-END:variables
+
+    public void limpiarModificarConcepto() {
+        txtCodigoAntMC.setText("");
+        cbConceptoMC.setSelectedIndex(0);
+    }
 
 }

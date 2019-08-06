@@ -6,7 +6,10 @@
 package cliente.gui;
 
 import cliente.objetosremotos.EstudianteDirectorRemoto;
+import cliente.utilidades.Constantes;
 import cliente.utilidades.Mensajes;
+import javax.swing.table.DefaultTableModel;
+import sop_corba.AnteproyectoDTO;
 
 /**
  *
@@ -21,11 +24,16 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
      * Creates new form EstDirGUI
      */
     public EstudianteDirectorGUI() {
-        this.estDirRemoto = new EstudianteDirectorRemoto(this);
         initComponents();
+        this.estDirRemoto = new EstudianteDirectorRemoto(this);
 
     }
 
+    public void listarAnteproyectos() {
+        tbAnteproyectosLA.setModel(new DefaultTableModel(this.estDirRemoto.listarAnteproyectos(), new String[]{
+            "CÓDIGO", "TITULO"
+        }));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,6 +77,7 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
         jLabel38 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbAnteproyectosLA = new javax.swing.JTable();
+        btnListar = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ESTUDIANTE - DIRECTOR");
@@ -84,11 +93,6 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
 
         txtTituloBA.setMinimumSize(new java.awt.Dimension(20, 41));
         txtTituloBA.setPreferredSize(new java.awt.Dimension(40, 40));
-        txtTituloBA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTituloBAActionPerformed(evt);
-            }
-        });
 
         jLabel28.setText("NOM. CO-DIRECTOR");
 
@@ -300,6 +304,13 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbAnteproyectosLA);
 
+        btnListar.setLabel("LISTAR");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -312,16 +323,22 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(166, 166, 166)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(268, 268, 268))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel38)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(293, 293, 293))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnListar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
 
         jTabbedPane2.addTab("LISTAR ANTEPROYECTOS", jPanel6);
@@ -350,18 +367,27 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTituloBAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloBAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTituloBAActionPerformed
-
     private void btnBuscarBAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarBAActionPerformed
         // TODO add your handling code here:
-        if (txtCodigoAntBA.getText().equals("")) {
+        String codigoAnteproyecto = txtCodigoAntBA.getText();
+        if (codigoAnteproyecto.equals("")) {
             Mensajes.error(jPanel5, "Debe ingresar el código del anteproyecto!");
         } else {
-
+            try{
+                Integer.parseInt(codigoAnteproyecto);
+                this.estDirRemoto.buscarAnteproyecto(codigoAnteproyecto);
+            }catch(NumberFormatException nfe){
+                Mensajes.error(jPanel5, nfe);
+            }
         }
     }//GEN-LAST:event_btnBuscarBAActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+            // TODO add your handling code here:
+            listarAnteproyectos();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnListarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,6 +427,7 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarBA;
+    private java.awt.Button btnListar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -435,4 +462,20 @@ public class EstudianteDirectorGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumRevisionBA;
     private javax.swing.JTextField txtTituloBA;
     // End of variables declaration//GEN-END:variables
+
+    public void cargarAnteproyecto(AnteproyectoDTO adto) {
+        txtModaliadaBA.setText(adto.getModalidad());
+        txtCoDirectorBA.setText(adto.getNombreCoDirector());
+        txtCodigoBA.setText(adto.getCodigo());
+        txtConceptoBA.setText(Constantes.Concepto[(adto.getConcepto() -1)] );
+        txtDirectorBA.setText(adto.getNombreDirector());
+        txtEstadoBA.setText(Constantes.Estado[(adto.getEstado() -1)]);
+        txtEstudiante1BA.setText(adto.getNombreEstudiante1());
+        txtEstudiante2BA.setText(adto.getNombreEstudiante2());
+        txtFechaRegBA.setText(adto.getFechaRegistro());
+        txtFechaRevBA.setText(adto.getFechaAprobacion());
+        txtModaliadaBA.setText(adto.getModalidad());
+        txtNumRevisionBA.setText(adto.getNumeroRevision()+"");
+        txtTituloBA.setText(adto.getTitulo());
+    }
 }

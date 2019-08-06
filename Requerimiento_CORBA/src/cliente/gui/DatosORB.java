@@ -6,6 +6,7 @@
 package cliente.gui;
 
 import cliente.utilidades.Constantes;
+import cliente.utilidades.Mensajes;
 import javax.swing.JOptionPane;
 
 /**
@@ -100,7 +101,7 @@ public class DatosORB extends javax.swing.JFrame {
                     .addComponent(txtUrlServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,11 +136,10 @@ public class DatosORB extends javax.swing.JFrame {
                 } else {
                     Constantes.ORBInitialHost = txtUrlServidor.getText();
                     Constantes.ORBInitialPort = puerto;
-                    for (String string : Constantes.argsORB()) {
-                        System.out.println(string);
-
-                    }
-//                    cliente.gui.IniciarSesion is = new IniciarSesion(Constantes.ORBInitialHost, Constantes.ORBInitialPort);
+                    this.setVisible(false);
+                    IniciarSesion is = new IniciarSesion();
+                    is.setLocationRelativeTo(null);
+                    is.setVisible(true);
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "El puerto debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
